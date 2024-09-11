@@ -38,11 +38,19 @@ function syncState(data){
     state.components = data;
 }
 
+let parent = null;
+function onInit(source){
+    parent = source;
+}
+
 onMounted(() => {
     window.addEventListener("message", (e) => {
         if(e.data){
             const { message, data } = e.data;
             switch(message){
+                case "init":
+                    onInit(e.source);
+                    break;
                 case "onCreateComponet":
                     syncState(data);
                     break;
